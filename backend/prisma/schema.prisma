@@ -1,0 +1,155 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+model PostingIdentity {
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  postingHash     String              @unique @map("posting_hash")
+  username        String              @unique
+  companyDomain   String              @map("company_domain")
+  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime            @updatedAt @map("updated_at") @db.Timestamptz
+  
+  posts           Post[]
+  comments        Comment[]
+  votes           Vote[]
+  createdChannels Channel[]
+  memberships     ChannelMembership[]
+  reports         Report[]
+
+  @@map("tweeting_posting_identities")
+}
+
+model OtpVerification {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  encryptedEmail String   @map("encrypted_email")
+  otpHash        String   @map("otp_hash")
+  expiresAt      DateTime @map("expires_at") @db.Timestamptz
+  attempts       Int      @default(0)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("tweeting_otp_verifications")
+}
+
+model Channel {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String    @unique
+  description   String
+  createdById   String    @map("created_by_id") @db.Uuid
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  creator       PostingIdentity @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  posts         Post[]
+  memberships   ChannelMembership[]
+
+  @@map("tweeting_channels")
+}
+
+model ChannelMembership {
+  userId    String   @map("user_id") @db.Uuid
+  channelId String   @map("channel_id") @db.Uuid
+  joinedAt  DateTime @default(now()) @map("joined_at") @db.Timestamptz
+  user      PostingIdentity @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@id([userId, channelId])
+  @@map("tweeting_channel_memberships")
+}
+
+model Post {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  content     String
+  authorId    String    @map("author_id") @db.Uuid
+  channelId   String    @map("channel_id") @db.Uuid
+  score       Int       @default(0)
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  author      PostingIdentity @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  channel     Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  votes       Vote[]
+  hashtags    PostHashtag[]
+  reports     Report[]
+
+  @@index([channelId, createdAt])
+  @@index([channelId, score])
+  @@map("tweeting_posts")
+}
+
+model Comment {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content     String
+  postId      String    @map("post_id") @db.Uuid
+  authorId    String    @map("author_id") @db.Uuid
+  parentId    String?   @map("parent_id") @db.Uuid
+  depth       Int       @default(0)
+  score       Int       @default(0)
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author      PostingIdentity @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent      Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentToComment")
+  votes       Vote[]
+  reports     Report[]
+
+  @@index([postId, parentId])
+  @@map("tweeting_comments")
+}
+
+model Vote {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  voterId   String   @map("voter_id") @db.Uuid
+  postId    String?  @map("post_id") @db.Uuid
+  commentId String?  @map("comment_id") @db.Uuid
+  value     Int
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  voter     PostingIdentity @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([voterId, postId])
+  @@unique([voterId, commentId])
+  @@map("tweeting_votes")
+}
+
+model Hashtag {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tag       String        @unique
+  createdAt DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  posts     PostHashtag[]
+
+  @@map("tweeting_hashtags")
+}
+
+model PostHashtag {
+  postId    String  @map("post_id") @db.Uuid
+  hashtagId String  @map("hashtag_id") @db.Uuid
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  hashtag   Hashtag @relation(fields: [hashtagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, hashtagId])
+  @@map("tweeting_post_hashtags")
+}
+
+model Report {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reporterId  String    @map("reporter_id") @db.Uuid
+  postId      String?   @map("post_id") @db.Uuid
+  commentId   String?   @map("comment_id") @db.Uuid
+  reason      String
+  status      String    @default("pending") // pending | reviewed | dismissed
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  reporter    PostingIdentity @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  post        Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment     Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@map("tweeting_reports")
+}
