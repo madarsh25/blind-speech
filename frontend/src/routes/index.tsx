@@ -233,14 +233,14 @@ function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-canvas font-sans text-ink">
+    <div className="flex flex-col min-h-screen bg-canvas font-sans text-ink pb-16 md:pb-0">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-canvas/85 backdrop-blur-md border-b border-hairline-soft px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link to="/" onClick={clearAllFilters} className="flex items-center gap-2">
-          <SpikeMark className="w-5 h-5 text-coral" />
-          <span className="font-display text-[20px] sm:text-[22px] leading-none tracking-tight font-medium">the tweeting platform</span>
+      <header className="sticky top-0 z-40 bg-canvas/90 backdrop-blur-md border-b border-hairline-soft px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+        <Link to="/" onClick={clearAllFilters} className="flex items-center gap-2 min-w-0">
+          <SpikeMark className="w-5 h-5 text-coral shrink-0" />
+          <span className="font-display text-[18px] sm:text-[22px] leading-none tracking-tight font-medium truncate">the tweeting platform</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <a
             href="https://blind-hire-alpha.vercel.app/"
             target="_blank"
@@ -252,13 +252,14 @@ function Dashboard() {
           
           {loaderUser ? (
             <>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-pill bg-coral/10 text-coral font-mono text-[12px] font-semibold">
-                @{loaderUser.username} · {loaderUser.companyDomain}
+              <span className="inline-flex items-center max-w-[130px] sm:max-w-none truncate px-2.5 py-1 rounded-pill bg-coral/10 text-coral font-mono text-[11px] sm:text-[12px] font-semibold">
+                @{loaderUser.username}
               </span>
               <button 
                 onClick={handleLogout} 
-                className="text-muted-ink hover:text-ink cursor-pointer"
+                className="text-muted-ink hover:text-ink cursor-pointer p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
                 title="Sign Out"
+                aria-label="Sign out"
               >
                 <LogOut className="w-4.5 h-4.5" />
               </button>
@@ -269,7 +270,7 @@ function Dashboard() {
                 setExploreViewOnly(false);
                 setShowAuthPrompt(false);
               }}
-              className="bg-coral hover:bg-coral-active text-white text-[13px] px-3.5 py-1.5 font-medium rounded-md transition-colors cursor-pointer"
+              className="bg-coral hover:bg-coral-active active:scale-95 text-white text-[13px] px-3.5 py-1.5 font-medium rounded-md transition-all cursor-pointer"
             >
               Sign In
             </button>
@@ -279,20 +280,20 @@ function Dashboard() {
 
       {/* Guest/View-Only Alert Bar */}
       {!loaderUser && (
-        <div className="bg-coral/10 border-b border-coral/25 px-6 py-2.5 text-center text-[13px] text-coral font-medium flex items-center justify-center gap-2 font-sans">
-          <Lock className="w-4 h-4" />
-          <span>You are browsing in View-Only Mode. Sign in to contribute!</span>
+        <div className="bg-coral/10 border-b border-coral/25 px-4 py-2.5 text-center text-[12.5px] sm:text-[13px] text-coral font-medium flex items-center justify-center gap-2 font-sans">
+          <Lock className="w-4 h-4 shrink-0" />
+          <span>View-Only Mode. Sign in to contribute!</span>
         </div>
       )}
 
       {/* Main Layout Container */}
-      <div className="flex-grow max-w-[1200px] w-full mx-auto px-4 sm:px-6 py-6 md:py-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+      <div className="flex-grow max-w-[1200px] w-full mx-auto px-4 sm:px-6 py-4 sm:py-8 grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8">
         
         {/* Left Sidebar - Channels & Communities (Desktop only) */}
         <aside className="hidden md:block md:col-span-3 space-y-6">
-          <div className="bg-surface-card rounded-lg p-5 hairline">
+          <div className="bg-surface-card rounded-xl p-5 hairline">
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-hairline-soft">
-              <span className="caption-upper text-[11px] text-muted-ink font-semibold tracking-wider">Communities</span>
+              <span className="caption-upper text-muted-ink">Communities</span>
               <button 
                 onClick={() => {
                   if (!loaderUser) {
@@ -301,7 +302,7 @@ function Dashboard() {
                     setShowChannelModal(true);
                   }
                 }} 
-                className="text-coral hover:text-coral-active cursor-pointer"
+                className="text-coral hover:text-coral-active cursor-pointer p-1"
                 title="Create Channel"
               >
                 <Plus className="w-4 h-4" />
@@ -358,8 +359,8 @@ function Dashboard() {
           </div>
 
           {/* Trending Tags (Desktop only) */}
-          <div className="bg-surface-card rounded-lg p-5 hairline">
-            <span className="caption-upper text-[11px] text-muted-ink font-semibold tracking-wider block mb-3 border-b border-hairline-soft pb-2">Trending Tags</span>
+          <div className="bg-surface-card rounded-xl p-5 hairline">
+            <span className="caption-upper text-muted-ink block mb-3 border-b border-hairline-soft pb-2">Trending Tags</span>
             <div className="space-y-1.5">
               {trendingTags.length === 0 ? (
                 <p className="text-[12px] text-muted-soft italic px-3">No tags trending in last 48h</p>
@@ -387,18 +388,18 @@ function Dashboard() {
         </aside>
 
         {/* Center - Feed Column */}
-        <main className="col-span-1 md:col-span-9 space-y-6 max-w-xl md:max-w-none mx-auto w-full">
+        <main className="col-span-1 md:col-span-9 space-y-4 sm:space-y-6 max-w-xl md:max-w-none mx-auto w-full">
           
           {/* Top Search bar & Write trigger */}
-          <div className="bg-surface-card rounded-lg p-4 hairline flex items-center gap-3 justify-between">
-            <div className="relative flex-grow max-w-md">
+          <div className="bg-surface-card rounded-xl p-3 sm:p-4 hairline flex items-center gap-2 sm:gap-3 justify-between">
+            <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-soft" />
               <input
                 type="text"
                 placeholder="Search posts..."
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
-                className="w-full bg-canvas text-ink pl-9 pr-4 py-1.5 text-[13.5px] rounded-md hairline focus:outline-none focus:border-coral font-sans"
+                className="w-full bg-canvas text-ink pl-9 pr-4 py-2 text-[16px] sm:text-[13.5px] rounded-md hairline focus:outline-none focus:border-coral font-sans"
               />
             </div>
             
@@ -413,24 +414,24 @@ function Dashboard() {
                 }
                 setShowPostModal(true);
               }}
-              className="bg-coral hover:bg-coral-active text-white text-[13px] px-4 py-2 font-medium rounded-md flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
+              className="bg-coral hover:bg-coral-active active:scale-95 text-white text-[13px] px-3.5 sm:px-4 py-2 font-medium rounded-md flex items-center gap-1.5 transition-all cursor-pointer shrink-0 min-h-[40px]"
             >
-              <Plus className="w-4 h-4" /> Create Post
+              <Plus className="w-4 h-4" /> <span className="hidden xs:inline">Create Post</span>
             </button>
           </div>
 
-          {/* Feed Filter Headers */}
-          <div className="bg-surface-card rounded-lg p-3 hairline flex items-center justify-between flex-wrap gap-2">
-            <div className="flex gap-2">
+          {/* Feed Filter Headers with horizontal swipe on mobile */}
+          <div className="bg-surface-card rounded-xl p-2.5 sm:p-3 hairline flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
               <button
                 onClick={() => {
                   setFeedMode("home");
                   setActiveChannelId(null);
                   setActiveHashtag(null);
                 }}
-                className={`px-3.5 py-1 rounded-md text-[13px] font-medium transition-colors ${
+                className={`px-3 py-1.5 rounded-md text-[12.5px] sm:text-[13px] font-medium transition-all shrink-0 cursor-pointer ${
                   feedMode === "home" && activeChannelId === null && activeHashtag === null
-                    ? "bg-canvas hairline text-ink"
+                    ? "bg-surface-card hairline text-ink font-semibold shadow-2xs"
                     : "text-muted-ink hover:text-ink"
                 }`}
               >
@@ -442,18 +443,18 @@ function Dashboard() {
                   setActiveChannelId(null);
                   setActiveHashtag(null);
                 }}
-                className={`px-3.5 py-1 rounded-md text-[13px] font-medium transition-colors ${
+                className={`px-3 py-1.5 rounded-md text-[12.5px] sm:text-[13px] font-medium transition-all shrink-0 cursor-pointer ${
                   feedMode === "discover" && activeChannelId === null && activeHashtag === null
-                    ? "bg-canvas hairline text-ink"
+                    ? "bg-surface-card hairline text-ink font-semibold shadow-2xs"
                     : "text-muted-ink hover:text-ink"
                 }`}
               >
-                Discover Communities
+                Discover
               </button>
             </div>
 
             {/* Sort selection */}
-            <div className="flex items-center gap-1.5 bg-canvas/60 p-0.5 rounded-md hairline">
+            <div className="flex items-center gap-1 bg-canvas/60 p-0.5 rounded-md hairline">
               {[
                 { type: "new", icon: <Clock className="w-3.5 h-3.5" />, label: "New" },
                 { type: "top", icon: <BarChart2 className="w-3.5 h-3.5" />, label: "Top" },
@@ -462,9 +463,9 @@ function Dashboard() {
                 <button
                   key={s.type}
                   onClick={() => setSortBy(s.type as any)}
-                  className={`px-2.5 py-1 rounded text-[12px] font-medium flex items-center gap-1 transition-colors ${
+                  className={`px-2.5 py-1 rounded text-[12px] font-medium flex items-center gap-1 transition-all cursor-pointer ${
                     sortBy === s.type
-                      ? "bg-white text-coral font-semibold shadow-sm"
+                      ? "bg-surface-card text-coral font-semibold shadow-xs"
                       : "text-muted-ink hover:text-ink"
                   }`}
                 >
@@ -476,18 +477,18 @@ function Dashboard() {
 
           {/* Active Hashtag Header */}
           {activeHashtag && (
-            <div className="bg-surface-card rounded-lg p-4 hairline flex items-center justify-between animate-fade-up">
+            <div className="bg-surface-card rounded-xl p-4 hairline flex items-center justify-between animate-fade-up">
               <div>
-                <h3 className="font-display text-[22px] text-ink flex items-center gap-1">
+                <h3 className="font-display text-[20px] sm:text-[22px] text-ink flex items-center gap-1">
                   <Hash className="w-5 h-5 text-coral" /> #{activeHashtag}
                 </h3>
-                <p className="text-[12.5px] text-muted-ink">Showing posts containing the tag #{activeHashtag}</p>
+                <p className="text-[12px] sm:text-[12.5px] text-muted-ink">Showing posts tagged #{activeHashtag}</p>
               </div>
               <button 
                 onClick={() => setActiveHashtag(null)}
-                className="text-[12px] font-medium text-coral hover:underline"
+                className="text-[12px] font-medium text-coral hover:underline py-1 px-2 cursor-pointer"
               >
-                Clear filter
+                Clear
               </button>
             </div>
           )}
@@ -498,28 +499,28 @@ function Dashboard() {
               const current = channels.find(c => c.id === activeChannelId);
               if (!current) return null;
               return (
-                <div className="bg-surface-card rounded-lg p-5 hairline animate-fade-up">
-                  <div className="flex items-start justify-between">
+                <div className="bg-surface-card rounded-xl p-4 sm:p-5 hairline animate-fade-up">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                     <div>
-                      <h2 className="font-display text-[24px] text-ink flex items-center gap-1">
+                      <h2 className="font-display text-[22px] sm:text-[24px] text-ink flex items-center gap-1">
                         <Hash className="w-5 h-5 text-coral" /> {current.name}
                       </h2>
                       {current.description && (
-                        <p className="mt-1 text-[13.5px] text-muted-ink">{current.description}</p>
+                        <p className="mt-1 text-[13px] sm:text-[13.5px] text-muted-ink">{current.description}</p>
                       )}
                     </div>
                     <button
                       onClick={() => handleToggleJoin(current.id, current.isMember)}
-                      className={`px-3.5 py-1.5 text-[12px] font-semibold border rounded-md cursor-pointer transition-colors ${
+                      className={`w-full sm:w-auto px-3.5 py-1.5 text-[12px] font-semibold border rounded-md cursor-pointer transition-all active:scale-95 shrink-0 ${
                         current.isMember 
-                          ? "bg-canvas text-muted-ink border-hairline hover:bg-red-50 hover:text-red-600" 
+                          ? "bg-canvas text-muted-ink border-hairline hover:bg-red-50 hover:text-destructive" 
                           : "bg-coral text-white border-coral hover:bg-coral-active"
                       }`}
                     >
                       {current.isMember ? "Joined" : "Join Channel"}
                     </button>
                   </div>
-                  <div className="mt-3.5 text-[11.5px] font-mono text-muted-soft flex items-center gap-4">
+                  <div className="mt-3 text-[11.5px] font-mono text-muted-soft flex items-center gap-4 border-t border-hairline-soft/45 pt-2.5">
                     <span>{current.memberCount} members</span>
                     <span>{current.postCount} posts</span>
                   </div>
@@ -529,11 +530,11 @@ function Dashboard() {
           )}
 
           {/* Posts Feed list */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {isLoading ? (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {[1, 2, 3].map((n) => (
-                  <div key={n} className="bg-surface-card rounded-lg p-6 hairline animate-pulse space-y-3">
+                  <div key={n} className="bg-surface-card rounded-xl p-5 sm:p-6 hairline animate-pulse space-y-3">
                     <div className="h-4 bg-canvas/80 w-1/3 rounded" />
                     <div className="h-6 bg-canvas/80 w-3/4 rounded" />
                     <div className="h-12 bg-canvas/80 w-full rounded" />
@@ -541,10 +542,10 @@ function Dashboard() {
                 ))}
               </div>
             ) : posts.length === 0 ? (
-              <div className="bg-surface-card rounded-lg p-12 text-center hairline">
-                <Compass className="w-10 h-10 text-muted-soft mx-auto mb-3" />
-                <h3 className="font-display text-[20px] text-ink mb-1">No posts found</h3>
-                <p className="text-[13.5px] text-muted-ink">
+              <div className="bg-surface-card rounded-xl p-8 sm:p-12 text-center hairline">
+                <Compass className="w-8 h-8 sm:w-10 sm:h-10 text-muted-soft mx-auto mb-3" />
+                <h3 className="font-display text-[18px] sm:text-[20px] text-ink mb-1">No posts found</h3>
+                <p className="text-[13px] sm:text-[13.5px] text-muted-ink">
                   {feedMode === "home" 
                     ? "Posts from your joined channels will appear here. Discover and join communities to get started!"
                     : "No posts have been shared in this community yet. Be the first to share one!"}
@@ -552,14 +553,15 @@ function Dashboard() {
               </div>
             ) : (
               posts.map((post) => (
-                <article key={post.id} className="bg-surface-card rounded-lg p-4 sm:p-6 hairline animate-fade-up flex gap-3 sm:gap-4">
-                  {/* Vote Column */}
-                  <div className="flex flex-col items-center gap-1 shrink-0 pt-0.5">
+                <article key={post.id} className="bg-surface-card rounded-xl p-4 sm:p-6 hairline animate-fade-up flex gap-3 sm:gap-4">
+                  {/* Vote Column with ~44px touch target */}
+                  <div className="flex flex-col items-center gap-0.5 shrink-0 pt-0.5">
                     <button
                       onClick={() => handleVote(post.id, post.userVote, 1)}
-                      className={`p-1 rounded hover:bg-canvas transition-colors cursor-pointer ${
+                      className={`p-2 sm:p-1 rounded hover:bg-canvas active:scale-90 transition-all cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center ${
                         post.userVote === 1 ? "text-coral" : "text-muted-soft"
                       }`}
+                      aria-label="Upvote post"
                     >
                       <ChevronUp className="w-5.5 h-5.5 sm:w-6 sm:h-6" />
                     </button>
@@ -570,9 +572,10 @@ function Dashboard() {
                     </span>
                     <button
                       onClick={() => handleVote(post.id, post.userVote, -1)}
-                      className={`p-1 rounded hover:bg-canvas transition-colors cursor-pointer ${
+                      className={`p-2 sm:p-1 rounded hover:bg-canvas active:scale-90 transition-all cursor-pointer min-w-[38px] min-h-[38px] flex items-center justify-center ${
                         post.userVote === -1 ? "text-blue-500" : "text-muted-soft"
                       }`}
+                      aria-label="Downvote post"
                     >
                       <ChevronDown className="w-5.5 h-5.5 sm:w-6 sm:h-6" />
                     </button>
@@ -601,16 +604,16 @@ function Dashboard() {
                     </div>
 
                     <Link to="/posts/$id" params={{ id: post.id }} className="block group">
-                      <h3 className="font-display text-[18px] sm:text-[20px] text-ink group-hover:text-coral transition-colors leading-snug">
+                      <h3 className="font-display text-[18px] sm:text-[20px] text-ink group-hover:text-coral transition-colors leading-snug break-words">
                         {post.title}
                       </h3>
-                      <p className="mt-1.5 text-[13.5px] sm:text-[14px] leading-relaxed text-body line-clamp-3 font-sans">
+                      <p className="mt-1.5 text-[13.5px] sm:text-[14px] leading-relaxed text-body line-clamp-3 font-sans break-words">
                         {post.content}
                       </p>
                     </Link>
 
-                    <div className="mt-4 pt-3 border-t border-hairline-soft/60 flex items-center text-[12.5px] text-muted-ink">
-                      <Link to="/posts/$id" params={{ id: post.id }} className="flex items-center gap-1.5 hover:text-ink transition-colors">
+                    <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-hairline-soft/60 flex items-center text-[12.5px] text-muted-ink">
+                      <Link to="/posts/$id" params={{ id: post.id }} className="flex items-center gap-1.5 hover:text-ink transition-colors py-1">
                         <MessageSquare className="w-4 h-4" />
                         <span>{post.commentCount} comments</span>
                       </Link>
@@ -624,28 +627,28 @@ function Dashboard() {
       </div>
 
       {/* MOBILE BOTTOM NAVIGATION BAR */}
-      <nav className="sticky bottom-0 z-40 bg-canvas border-t border-hairline flex justify-around items-center h-14 md:hidden px-4">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-canvas/95 backdrop-blur-md border-t border-hairline flex justify-around items-center h-14 md:hidden px-4">
         <button
           onClick={() => {
             clearAllFilters();
             setFeedMode("home");
           }}
-          className={`flex flex-col items-center justify-center cursor-pointer ${
+          className={`flex flex-col items-center justify-center cursor-pointer py-1 px-3 min-h-[44px] ${
             activeChannelId === null && activeHashtag === null
               ? "text-coral font-semibold"
               : "text-muted-ink hover:text-ink"
           }`}
         >
           <Compass className="w-5.5 h-5.5" />
-          <span className="text-[10px] mt-0.5">Explore</span>
+          <span className="text-[10px] mt-0.5 font-medium">Explore</span>
         </button>
         
         <button
           onClick={() => setShowMobileDrawer(true)}
-          className="flex flex-col items-center justify-center text-muted-ink hover:text-ink cursor-pointer"
+          className="flex flex-col items-center justify-center text-muted-ink hover:text-ink cursor-pointer py-1 px-3 min-h-[44px]"
         >
           <Menu className="w-5.5 h-5.5" />
-          <span className="text-[10px] mt-0.5">Communities</span>
+          <span className="text-[10px] mt-0.5 font-medium">Communities</span>
         </button>
 
         <button
@@ -656,10 +659,10 @@ function Dashboard() {
             }
             setShowPostModal(true);
           }}
-          className="flex flex-col items-center justify-center text-coral cursor-pointer"
+          className="flex flex-col items-center justify-center text-coral cursor-pointer py-1 px-3 min-h-[44px]"
         >
-          <Plus className="w-6 h-6 p-1 bg-coral/10 rounded-full" />
-          <span className="text-[10px] mt-0.5">Post</span>
+          <Plus className="w-6 h-6 p-1 bg-coral/15 rounded-full" />
+          <span className="text-[10px] mt-0.5 font-medium">Post</span>
         </button>
 
         {!loaderUser ? (
@@ -668,18 +671,18 @@ function Dashboard() {
               setExploreViewOnly(false);
               setShowAuthPrompt(false);
             }}
-            className="flex flex-col items-center justify-center text-muted-ink hover:text-ink cursor-pointer"
+            className="flex flex-col items-center justify-center text-muted-ink hover:text-ink cursor-pointer py-1 px-3 min-h-[44px]"
           >
             <Lock className="w-5.5 h-5.5" />
-            <span className="text-[10px] mt-0.5">Sign In</span>
+            <span className="text-[10px] mt-0.5 font-medium">Sign In</span>
           </button>
         ) : (
           <button
             onClick={handleLogout}
-            className="flex flex-col items-center justify-center text-muted-ink hover:text-ink cursor-pointer"
+            className="flex flex-col items-center justify-center text-muted-ink hover:text-ink cursor-pointer py-1 px-3 min-h-[44px]"
           >
             <LogOut className="w-5.5 h-5.5" />
-            <span className="text-[10px] mt-0.5">Log Out</span>
+            <span className="text-[10px] mt-0.5 font-medium">Log Out</span>
           </button>
         )}
       </nav>
@@ -691,10 +694,10 @@ function Dashboard() {
             className="fixed inset-0 bg-black/45 backdrop-blur-sm" 
             onClick={() => setShowMobileDrawer(false)} 
           />
-          <div className="relative w-72 max-w-[80vw] bg-surface-card hairline-r p-5 flex flex-col justify-between overflow-y-auto animate-fade-up">
+          <div className="relative w-72 max-w-[85vw] bg-surface-card hairline-r p-5 flex flex-col justify-between overflow-y-auto animate-fade-up">
             <div className="space-y-6">
               <div className="flex items-center justify-between pb-2 border-b border-hairline-soft">
-                <span className="caption-upper text-[11px] text-muted-ink font-semibold tracking-wider">Communities</span>
+                <span className="caption-upper text-muted-ink">Communities</span>
                 <button 
                   onClick={() => {
                     setShowMobileDrawer(false);
@@ -704,9 +707,9 @@ function Dashboard() {
                       setShowChannelModal(true);
                     }
                   }} 
-                  className="text-coral cursor-pointer"
+                  className="text-coral cursor-pointer p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
                 >
-                  <Plus className="w-4.5 h-4.5" />
+                  <Plus className="w-5 h-5" />
                 </button>
               </div>
 
@@ -717,9 +720,9 @@ function Dashboard() {
                     clearAllFilters();
                     setShowMobileDrawer(false);
                   }}
-                  className="w-full text-left px-3 py-2 rounded-md text-[13.5px] flex items-center gap-2 hover:bg-canvas/50"
+                  className="w-full text-left px-3 py-2.5 rounded-md text-[13.5px] flex items-center gap-2 hover:bg-canvas/50 cursor-pointer min-h-[44px]"
                 >
-                  <Compass className="w-4 h-4" />
+                  <Compass className="w-4 h-4 shrink-0" />
                   <span>Discover Feed</span>
                 </button>
 
@@ -731,7 +734,7 @@ function Dashboard() {
                         setActiveHashtag(null);
                         setShowMobileDrawer(false);
                       }}
-                      className={`flex-grow text-left px-3 py-2 rounded-l-md text-[13.5px] flex items-center gap-2 truncate ${
+                      className={`flex-grow text-left px-3 py-2.5 rounded-l-md text-[13.5px] flex items-center gap-2 truncate cursor-pointer min-h-[44px] ${
                         activeChannelId === c.id ? "font-semibold text-coral" : "text-body"
                       }`}
                     >
@@ -742,7 +745,7 @@ function Dashboard() {
                       onClick={() => {
                         handleToggleJoin(c.id, c.isMember);
                       }}
-                      className="px-3 py-2 text-[11px] font-semibold text-coral cursor-pointer"
+                      className="px-3 py-2.5 text-[11.5px] font-semibold text-coral cursor-pointer min-h-[44px] flex items-center"
                     >
                       {c.isMember ? "Leave" : "Join"}
                     </button>
@@ -752,7 +755,7 @@ function Dashboard() {
 
               {/* Drawer Trending hashtags */}
               <div className="pt-4 border-t border-hairline-soft/60">
-                <span className="caption-upper text-[10px] text-muted-ink block mb-3">Trending Tags</span>
+                <span className="caption-upper text-muted-ink block mb-3">Trending Tags</span>
                 <div className="space-y-1.5">
                   {trendingTags.map((t) => (
                     <button
@@ -762,7 +765,7 @@ function Dashboard() {
                         setActiveChannelId(null);
                         setShowMobileDrawer(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 rounded-md text-[13px] flex items-center justify-between ${
+                      className={`w-full text-left px-3 py-2 rounded-md text-[13px] flex items-center justify-between cursor-pointer min-h-[40px] ${
                         activeHashtag === t.tag ? "font-semibold text-coral bg-canvas" : "text-body hover:bg-canvas/50"
                       }`}
                     >
@@ -776,7 +779,7 @@ function Dashboard() {
 
             <button 
               onClick={() => setShowMobileDrawer(false)}
-              className="mt-6 flex items-center gap-1 text-[13px] font-medium text-muted-ink hover:text-ink hover:underline cursor-pointer"
+              className="mt-6 flex items-center gap-1 text-[13px] font-medium text-muted-ink hover:text-ink hover:underline cursor-pointer min-h-[44px]"
             >
               <X className="w-4 h-4" /> Close Menu
             </button>
@@ -786,8 +789,8 @@ function Dashboard() {
 
       {/* AUTH PROMPT DIALOG */}
       {showAuthPrompt && (
-        <div className="fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-center justify-center p-6 animate-fade-in">
-          <div className="bg-surface-card max-w-[400px] w-full rounded-xl p-6 hairline shadow-2xl animate-fade-up font-sans">
+        <div className="fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-3 sm:p-6 animate-fade-in">
+          <div className="bg-surface-card max-w-[400px] w-full max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-xl p-5 sm:p-6 hairline shadow-2xl animate-fade-up font-sans">
             <div className="text-center">
               <div className="w-12 h-12 bg-coral/10 text-coral rounded-full flex items-center justify-center mx-auto mb-4">
                 <Lock className="w-6 h-6" />
@@ -802,14 +805,14 @@ function Dashboard() {
                     setShowAuthPrompt(false);
                     setExploreViewOnly(false);
                   }}
-                  className="w-full bg-coral hover:bg-coral-active text-white py-2.5 rounded-md font-medium text-[13.5px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="w-full bg-coral hover:bg-coral-active active:scale-[0.98] text-white min-h-[44px] py-2.5 rounded-md font-medium text-[13.5px] flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
                   Verify Email <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowAuthPrompt(false)}
-                  className="w-full text-muted-ink hover:text-ink hover:bg-canvas py-2 rounded-md text-[13px] font-medium transition-colors cursor-pointer"
+                  className="w-full text-muted-ink hover:text-ink hover:bg-canvas min-h-[40px] py-2 rounded-md text-[13px] font-medium transition-colors cursor-pointer"
                 >
                   Keep Browsing
                 </button>
@@ -821,16 +824,16 @@ function Dashboard() {
 
       {/* MODAL: Create Channel */}
       {showChannelModal && (
-        <div className="fixed inset-0 bg-black/35 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-          <div className="bg-surface-card max-w-[480px] w-full rounded-xl p-6 hairline shadow-2xl animate-fade-up font-sans">
-            <h3 className="font-display text-display-sm text-ink mb-2">Create a new community</h3>
-            <p className="text-[13.5px] text-body mb-4 leading-relaxed">
+        <div className="fixed inset-0 bg-black/35 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-6">
+          <div className="bg-surface-card max-w-[480px] w-full max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-xl p-5 sm:p-6 hairline shadow-2xl animate-fade-up font-sans">
+            <h3 className="font-display text-[20px] sm:text-display-sm text-ink mb-1.5">Create a new community</h3>
+            <p className="text-[13px] sm:text-[13.5px] text-body mb-4 leading-relaxed">
               Channels align employees around companies or topics. Creators remain completely anonymized.
             </p>
             
             <form onSubmit={handleCreateChannel} className="space-y-4">
               <div>
-                <label className="caption-upper text-[11px] text-muted-ink block mb-1">Channel Name (slug)</label>
+                <label className="caption-upper text-muted-ink block mb-1">Channel Name (slug)</label>
                 <input
                   type="text"
                   required
@@ -838,18 +841,18 @@ function Dashboard() {
                   value={newChannelName}
                   onChange={(e) => setNewChannelName(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ""))}
                   disabled={isLoading}
-                  className="w-full bg-canvas text-ink px-3 py-2 text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
+                  className="w-full bg-canvas text-ink px-3.5 py-2.5 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
                 />
               </div>
               <div>
-                <label className="caption-upper text-[11px] text-muted-ink block mb-1">Description</label>
+                <label className="caption-upper text-muted-ink block mb-1">Description</label>
                 <textarea
                   placeholder="What is this community for?"
                   value={newChannelDesc}
                   onChange={(e) => setNewChannelDesc(e.target.value)}
                   disabled={isLoading}
                   rows={3}
-                  className="w-full bg-canvas text-ink px-3 py-2 text-[14px] rounded-md hairline focus:outline-none focus:border-coral resize-none"
+                  className="w-full bg-canvas text-ink px-3.5 py-2.5 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral resize-none"
                 />
               </div>
 
@@ -857,18 +860,18 @@ function Dashboard() {
                 <p className="text-destructive text-[13px] font-medium">{errorMsg}</p>
               )}
 
-              <div className="flex justify-end gap-2.5 pt-2">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowChannelModal(false)}
-                  className="px-4 py-2 text-[13px] font-medium hover:bg-canvas rounded-md cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 text-[13px] font-medium hover:bg-canvas rounded-md cursor-pointer min-h-[44px] flex items-center justify-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading || newChannelName.length < 3}
-                  className="bg-coral hover:bg-coral-active text-white px-5 py-2 text-[13px] font-medium rounded-md cursor-pointer disabled:opacity-50"
+                  className="w-full sm:w-auto bg-coral hover:bg-coral-active active:scale-[0.98] text-white px-5 py-2.5 text-[13.5px] sm:text-[13px] font-medium rounded-md cursor-pointer disabled:opacity-50 min-h-[44px] flex items-center justify-center"
                 >
                   {isLoading ? "Creating..." : "Create Community"}
                 </button>
@@ -880,22 +883,22 @@ function Dashboard() {
 
       {/* MODAL: Create Post */}
       {showPostModal && (
-        <div className="fixed inset-0 bg-black/35 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-          <div className="bg-surface-card max-w-[600px] w-full rounded-xl p-6 hairline shadow-2xl animate-fade-up font-sans">
-            <h3 className="font-display text-display-sm text-ink mb-2">Create a new post</h3>
-            <p className="text-[13.5px] text-body mb-4">
+        <div className="fixed inset-0 bg-black/35 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-6">
+          <div className="bg-surface-card max-w-[600px] w-full max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-xl p-5 sm:p-6 hairline shadow-2xl animate-fade-up font-sans">
+            <h3 className="font-display text-[20px] sm:text-display-sm text-ink mb-1.5">Create a new post</h3>
+            <p className="text-[13px] sm:text-[13.5px] text-body mb-4">
               Share salary details, work questions, or feedback anonymously.
             </p>
             
             <form onSubmit={handleCreatePost} className="space-y-4">
               <div>
-                <label className="caption-upper text-[11px] text-muted-ink block mb-1">Select Channel</label>
+                <label className="caption-upper text-muted-ink block mb-1">Select Channel</label>
                 <select
                   required
                   value={selectedChannelId}
                   onChange={(e) => setSelectedChannelId(e.target.value)}
                   disabled={isLoading}
-                  className="w-full bg-canvas text-ink px-3 py-2 text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
+                  className="w-full bg-canvas text-ink px-3.5 py-2.5 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
                 >
                   <option value="">-- Choose a community --</option>
                   {channels.map(c => (
@@ -905,7 +908,7 @@ function Dashboard() {
               </div>
               
               <div>
-                <label className="caption-upper text-[11px] text-muted-ink block mb-1">Post Title</label>
+                <label className="caption-upper text-muted-ink block mb-1">Post Title</label>
                 <input
                   type="text"
                   required
@@ -913,21 +916,20 @@ function Dashboard() {
                   value={postTitle}
                   onChange={(e) => setPostTitle(e.target.value)}
                   disabled={isLoading}
-                  className="w-full bg-canvas text-ink px-3 py-2.5 text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
+                  className="w-full bg-canvas text-ink px-3.5 py-2.5 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
                 />
               </div>
 
-              {/* Content text area */}
               <div>
-                <label className="caption-upper text-[11px] text-muted-ink block mb-1">Content</label>
+                <label className="caption-upper text-muted-ink block mb-1">Content</label>
                 <textarea
                   required
                   placeholder="Share details, numbers, or context here... (tip: use #tags to categorize your post)"
                   value={postContent}
                   onChange={(e) => setPostContent(e.target.value)}
                   disabled={isLoading}
-                  rows={6}
-                  className="w-full bg-canvas text-ink px-3 py-2 text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
+                  rows={5}
+                  className="w-full bg-canvas text-ink px-3.5 py-2.5 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral"
                 />
               </div>
 
@@ -935,18 +937,18 @@ function Dashboard() {
                 <p className="text-destructive text-[13px] font-medium">{errorMsg}</p>
               )}
 
-              <div className="flex justify-end gap-2.5 pt-2">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowPostModal(false)}
-                  className="px-4 py-2 text-[13px] font-medium hover:bg-canvas rounded-md cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 text-[13px] font-medium hover:bg-canvas rounded-md cursor-pointer min-h-[44px] flex items-center justify-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading || postTitle.length < 5 || postContent.length < 10 || !selectedChannelId}
-                  className="bg-coral hover:bg-coral-active text-white px-5 py-2 text-[13px] font-medium rounded-md cursor-pointer disabled:opacity-50"
+                  className="w-full sm:w-auto bg-coral hover:bg-coral-active active:scale-[0.98] text-white px-5 py-2.5 text-[13.5px] sm:text-[13px] font-medium rounded-md cursor-pointer disabled:opacity-50 min-h-[44px] flex items-center justify-center"
                 >
                   {isLoading ? "Submitting..." : "Post Anonymously"}
                 </button>
@@ -986,19 +988,19 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 bg-canvas/85 backdrop-blur-md border-b border-hairline-soft">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
+    <div className="flex flex-col min-h-screen bg-canvas font-sans text-ink">
+      <header className="sticky top-0 z-50 bg-canvas/90 backdrop-blur-md border-b border-hairline-soft">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-10 h-14 sm:h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <SpikeMark className="w-5 h-5 text-coral" />
-            <span className="font-display text-[22px] leading-none text-ink tracking-tight font-display">the tweeting platform</span>
+            <SpikeMark className="w-5 h-5 text-coral shrink-0" />
+            <span className="font-display text-[19px] sm:text-[22px] leading-none text-ink tracking-tight">the tweeting platform</span>
           </Link>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <a
               href="https://blind-hire-alpha.vercel.app/"
               target="_blank"
               rel="noreferrer"
-              className="text-[14px] font-medium text-muted-ink hover:text-ink transition-colors flex items-center gap-1"
+              className="text-[13px] sm:text-[14px] font-medium text-muted-ink hover:text-ink transition-colors flex items-center gap-1 min-h-[40px]"
             >
               Get Hired <ArrowRight className="w-3.5 h-3.5" />
             </a>
@@ -1007,13 +1009,13 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
       </header>
 
       <main className="flex-grow">
-        <section className="relative">
-          <div className="max-w-[1200px] mx-auto px-6 lg:px-10 pt-4 lg:pt-6 pb-12">
-            <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <section className="relative overflow-hidden">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-10 pt-4 lg:pt-6 pb-12 sm:pb-16">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
               
               <div className="lg:col-span-7 animate-fade-up">
-                <div className="inline-flex items-center gap-2 mb-4">
-                  <span className="inline-flex items-center rounded-pill bg-surface-card text-ink px-3 py-1 text-[13px] font-medium font-sans">
+                <div className="inline-flex items-center gap-2 mb-3.5 sm:mb-4">
+                  <span className="inline-flex items-center rounded-pill bg-surface-card text-ink px-3 py-1 text-[12px] sm:text-[13px] font-medium font-sans">
                     <ShieldCheck className="w-3.5 h-3.5 mr-1.5 inline text-coral" /> Zero-Linkage Architecture
                   </span>
                 </div>
@@ -1024,13 +1026,13 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
                   <span className="italic text-coral font-display">coworkers</span> really think.
                 </h1>
                 
-                <p className="mt-4 text-[16px] leading-[1.5] text-body max-w-[560px] font-sans">
+                <p className="mt-3.5 sm:mt-4 text-[15px] sm:text-[16px] leading-[1.55] text-body max-w-[560px] font-sans">
                   An anonymous workplace community where professionals share salary data, review companies, and talk honestly. Verified by your work email, protected by cryptographic isolation.
                 </p>
 
-                <div className="mt-6 bg-surface-card rounded-lg p-5 sm:p-6 hairline max-w-[540px]">
-                  <h3 className="font-display text-[19px] text-ink mb-1.5">Verify your workplace email</h3>
-                  <p className="text-[13px] text-muted-ink mb-3.5 font-sans">
+                <div className="mt-5 sm:mt-6 bg-surface-card rounded-xl p-4 sm:p-6 hairline max-w-[540px]">
+                  <h3 className="font-display text-[18px] sm:text-[19px] text-ink mb-1">Verify your workplace email</h3>
+                  <p className="text-[12.5px] sm:text-[13px] text-muted-ink mb-3.5 font-sans">
                     Enter your work email to receive a magic sign-in code. We never persist plaintext emails.
                   </p>
                   
@@ -1042,12 +1044,12 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled={isLoading}
-                      className="flex-grow bg-canvas text-ink px-4 py-2 text-[14px] rounded-md hairline focus:outline-none focus:border-coral transition-colors"
+                      className="flex-grow bg-canvas text-ink px-4 py-3 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral transition-colors"
                     />
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-coral hover:bg-coral-active text-white px-5 h-10 rounded-md text-[14px] font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-50 shrink-0"
+                      className="bg-coral hover:bg-coral-active active:scale-[0.98] text-white px-5 min-h-[48px] sm:h-auto rounded-md text-[14px] font-medium flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50 shrink-0"
                     >
                       {isLoading ? "Sending OTP..." : "Get Magic Code"}
                       <ArrowRight className="w-4 h-4" />
@@ -1055,79 +1057,79 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
                   </form>
 
                   {/* EXPLORE COMMUNITY CTA */}
-                  <div className="mt-3.5 pt-3.5 border-t border-hairline-soft/60 flex items-center justify-between text-[13.5px]">
+                  <div className="mt-3.5 pt-3.5 border-t border-hairline-soft/60 flex items-center justify-between text-[13px] sm:text-[13.5px]">
                     <span className="text-muted-ink">Want to look around first?</span>
                     <button
                       type="button"
                       onClick={onExplore}
-                      className="text-coral hover:text-coral-active font-semibold transition-colors cursor-pointer"
+                      className="text-coral hover:text-coral-active font-semibold transition-colors cursor-pointer py-1"
                     >
                       Explore Community &rarr;
                     </button>
                   </div>
                   
                   {errorMsg && (
-                    <p className="text-destructive text-[13px] mt-2.5 font-medium font-sans">{errorMsg}</p>
+                    <p className="text-destructive text-[13px] mt-2 font-medium font-sans">{errorMsg}</p>
                   )}
                 </div>
 
-                <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-muted-ink font-sans">
+                <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[12.5px] sm:text-[13px] text-muted-ink font-sans">
                   <span className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-coral" /> No password required
+                    <Check className="w-4 h-4 text-coral shrink-0" /> No password required
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-coral" /> Encrypted immediately
+                    <Check className="w-4 h-4 text-coral shrink-0" /> Encrypted immediately
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-coral" /> Zero corporate tracking
+                    <Check className="w-4 h-4 text-coral shrink-0" /> Zero corporate tracking
                   </span>
                 </div>
               </div>
 
               <div className="lg:col-span-5 animate-fade-up [animation-delay:120ms]">
-                <div className="relative">
-                  <div className="absolute -top-10 -left-6 text-[140px] leading-none font-display text-coral/10 select-none pointer-events-none">
+                <div className="relative max-w-md mx-auto lg:max-w-none">
+                  <div className="absolute -top-10 -left-6 text-[100px] sm:text-[140px] leading-none font-display text-coral/10 select-none pointer-events-none">
                     "
                   </div>
                   
-                  <div className="relative bg-surface-dark text-on-dark rounded-xl p-6 shadow-[0_20px_50px_rgba(20,20,19,0.3)] font-sans">
-                    <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                  <div className="relative bg-surface-dark text-on-dark rounded-xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(20,20,19,0.3)] font-sans">
+                    <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-full bg-surface-dark-elevated flex items-center justify-center">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-surface-dark-elevated flex items-center justify-center shrink-0">
                           <EyeOff className="w-4 h-4 text-on-dark-soft" />
                         </div>
                         <div>
-                          <div className="text-[14px] font-medium text-on-dark">anon-eng-482</div>
-                          <div className="text-[11px] text-on-dark-soft font-mono">google.com · verified</div>
+                          <div className="text-[13.5px] sm:text-[14px] font-medium text-on-dark">anon-eng-482</div>
+                          <div className="text-[10.5px] sm:text-[11px] text-on-dark-soft font-mono">google.com · verified</div>
                         </div>
                       </div>
-                      <span className="text-[12px] bg-coral/20 text-coral px-2.5 py-0.5 rounded-pill font-medium">Trending</span>
+                      <span className="text-[11px] sm:text-[12px] bg-coral/20 text-coral px-2.5 py-0.5 rounded-pill font-medium">Trending</span>
                     </div>
 
-                    <div className="mt-4">
-                      <h4 className="font-display text-[21px] text-on-dark leading-snug">
+                    <div className="mt-3.5">
+                      <h4 className="font-display text-[19px] sm:text-[21px] text-on-dark leading-snug break-words">
                         Is Google matching Netflix's new L6 base offers?
                       </h4>
-                      <p className="mt-2.5 text-[13.5px] leading-relaxed text-on-dark-soft">
+                      <p className="mt-2 text-[13px] sm:text-[13.5px] leading-relaxed text-on-dark-soft break-words">
                         Hearing reports that Netflix is offering $420k base cash for L6 equivalent roles. Has anyone successfully used this to negotiate a Google L6 counter? Recruiter is dragging feet...
                       </p>
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-white/5 flex items-center gap-4 text-[12.5px] text-on-dark-soft">
-                      <span className="flex items-center gap-1 hover:text-coral transition-colors cursor-pointer">
+                    <div className="mt-4 pt-3.5 border-t border-white/5 flex items-center gap-4 text-[12px] sm:text-[12.5px] text-on-dark-soft">
+                      <span className="flex items-center gap-1 hover:text-coral transition-colors cursor-pointer py-1">
                         <ThumbsUp className="w-4 h-4" /> 142
                       </span>
-                      <span className="flex items-center gap-1">
+                      <span className="flex items-center gap-1 py-1">
                         <MessageSquare className="w-4 h-4" /> 38 comments
                       </span>
-                      <span className="ml-auto font-mono text-[11px] text-on-dark-soft/60">sha-3fa82</span>
+                      <span className="ml-auto font-mono text-[10px] sm:text-[11px] text-on-dark-soft/60">sha-3fa82</span>
                     </div>
                   </div>
 
-                  <div className="absolute -bottom-5 -right-4 bg-canvas hairline rounded-lg px-4 py-3 shadow-md hidden md:block animate-float">
-                    <div className="caption-upper text-[11px] text-muted-ink">Security Guarantee</div>
-                    <div className="text-[13px] font-medium text-ink mt-1 flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-coral" /> Hashed identities cannot be linked
+                  <div className="bg-canvas hairline rounded-lg px-3.5 py-2.5 shadow-sm mt-3 lg:absolute lg:-bottom-5 lg:-right-4 lg:mt-0 max-w-fit">
+                    <div className="caption-upper text-[10px] text-muted-ink">Security Guarantee</div>
+                    <div className="text-[12px] sm:text-[13px] font-medium text-ink mt-0.5 flex items-center gap-1.5">
+                      <Lock className="w-3.5 h-3.5 text-coral shrink-0" /> Hashed identities cannot be linked
                     </div>
                   </div>
                 </div>
@@ -1138,34 +1140,34 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
         </section>
 
         {/* Section 1: The Problem */}
-        <section className="border-t border-hairline-soft bg-canvas py-24 font-sans">
-          <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <section className="border-t border-hairline-soft bg-canvas py-12 sm:py-20 font-sans">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-10">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
               <div className="lg:col-span-5 animate-fade-up">
-                <span className="caption-upper text-coral block mb-3 font-semibold">The Problem</span>
+                <span className="caption-upper text-coral block mb-2 font-semibold">The Problem</span>
                 <h2 className="text-display-lg text-ink">
                   Fear of <span className="italic font-display text-coral">retaliation</span> keeps workplace truths silent.
                 </h2>
-                <p className="mt-6 text-[16px] leading-[1.6] text-body max-w-[480px]">
+                <p className="mt-4 sm:mt-6 text-[15px] sm:text-[16px] leading-[1.6] text-body max-w-[480px]">
                   When employees cannot speak honestly, companies breed toxic cultures, pay disparities grow, and structural issues remain hidden. Current channels fail because they always expose the messenger.
                 </p>
               </div>
-              <div className="lg:col-span-7 flex flex-col gap-4 animate-fade-up [animation-delay:120ms]">
-                <div className="bg-surface-card rounded-lg p-6 hairline">
-                  <h3 className="text-[17px] font-semibold text-ink mb-1.5">Active Corporate Surveillance</h3>
-                  <p className="text-[14px] leading-relaxed text-body">
+              <div className="lg:col-span-7 flex flex-col gap-3.5 sm:gap-4 animate-fade-up [animation-delay:120ms]">
+                <div className="bg-surface-card rounded-xl p-5 sm:p-6 hairline">
+                  <h3 className="text-[16px] sm:text-[17px] font-semibold text-ink mb-1.5">Active Corporate Surveillance</h3>
+                  <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-body">
                     Slack, Teams, and work emails are entirely owned and monitored by IT. Any critical feedback or salary transparency discussions on company networks carry a permanent digital trace.
                   </p>
                 </div>
-                <div className="bg-surface-card rounded-lg p-6 hairline">
-                  <h3 className="text-[17px] font-semibold text-ink mb-1.5">Risks to Career & Reputation</h3>
-                  <p className="text-[14px] leading-relaxed text-body">
+                <div className="bg-surface-card rounded-xl p-5 sm:p-6 hairline">
+                  <h3 className="text-[16px] sm:text-[17px] font-semibold text-ink mb-1.5">Risks to Career & Reputation</h3>
+                  <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-body">
                     Raising issues about management or policies publicly can lead to performance-plan blacklists, career stagnation, or immediate dismissal. Speaking up is a high-stakes personal gamble.
                   </p>
                 </div>
-                <div className="bg-surface-card rounded-lg p-6 hairline">
-                  <h3 className="text-[17px] font-semibold text-ink mb-1.5">Performative Feedback Loops</h3>
-                  <p className="text-[14px] leading-relaxed text-body">
+                <div className="bg-surface-card rounded-xl p-5 sm:p-6 hairline">
+                  <h3 className="text-[16px] sm:text-[17px] font-semibold text-ink mb-1.5">Performative Feedback Loops</h3>
+                  <p className="text-[13.5px] sm:text-[14px] leading-relaxed text-body">
                     Standard HR review forms are rarely truly anonymous. Metadata, writing style, or timing parameters are frequently used to trace reviews back to individual staff members.
                   </p>
                 </div>
@@ -1175,16 +1177,16 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
         </section>
 
         {/* Section 2: How It Works */}
-        <section className="border-t border-hairline-soft bg-surface-soft/60 py-24 font-sans">
-          <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-            <div className="mb-16 text-center animate-fade-up">
-              <span className="caption-upper text-coral block mb-3 font-semibold">How It Works</span>
+        <section className="border-t border-hairline-soft bg-surface-soft/60 py-12 sm:py-20 font-sans">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-10">
+            <div className="mb-10 sm:mb-16 text-center animate-fade-up">
+              <span className="caption-upper text-coral block mb-2 font-semibold">How It Works</span>
               <h2 className="text-display-lg text-ink">
                 A secure protocol where identity has <span className="italic font-display text-coral font-display">nowhere</span> to hide.
               </h2>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {[
                 {
                   step: "01",
@@ -1211,14 +1213,14 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
                   desc: "Choose an anonymous username. Post and comment in feeds where only your username and verified company domain are displayed."
                 }
               ].map((s, idx) => (
-                <div key={idx} className="bg-canvas rounded-lg p-6 hairline flex flex-col justify-between min-h-[250px] animate-fade-up" style={{ animationDelay: `${idx * 100}ms` }}>
+                <div key={idx} className="bg-canvas rounded-xl p-5 sm:p-6 hairline flex flex-col justify-between min-h-[220px] sm:min-h-[250px] animate-fade-up" style={{ animationDelay: `${idx * 80}ms` }}>
                   <div>
-                    <span className="font-display text-[32px] text-coral/20 leading-none">{s.step}</span>
-                    <div className="w-9 h-9 bg-surface-soft rounded-md flex items-center justify-center my-4">
+                    <span className="font-display text-[28px] sm:text-[32px] text-coral/25 leading-none">{s.step}</span>
+                    <div className="w-9 h-9 bg-surface-soft rounded-md flex items-center justify-center my-3 sm:my-4">
                       {s.icon}
                     </div>
-                    <h3 className="text-[16px] font-semibold text-ink mb-2">{s.title}</h3>
-                    <p className="text-[13px] leading-relaxed text-muted-ink">{s.desc}</p>
+                    <h3 className="text-[15.5px] sm:text-[16px] font-semibold text-ink mb-1.5 sm:mb-2">{s.title}</h3>
+                    <p className="text-[12.5px] sm:text-[13px] leading-relaxed text-muted-ink">{s.desc}</p>
                   </div>
                 </div>
               ))}
@@ -1227,41 +1229,41 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
         </section>
 
         {/* Section 3: Privacy & Security */}
-        <section className="border-t border-hairline-soft bg-canvas py-24 font-sans">
-          <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-            <div className="bg-surface-dark text-on-dark rounded-xl p-8 lg:p-12 hairline relative overflow-hidden animate-fade-up">
-              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+        <section className="border-t border-hairline-soft bg-canvas py-12 sm:py-20 font-sans">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-10">
+            <div className="bg-surface-dark text-on-dark rounded-xl p-6 sm:p-8 lg:p-12 hairline relative overflow-hidden animate-fade-up">
+              <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center relative z-10">
                 <div className="lg:col-span-6">
-                  <span className="caption-upper text-coral block mb-3 font-semibold">Privacy & Security</span>
-                  <h2 className="text-display-md text-on-dark mb-4">
+                  <span className="caption-upper text-coral block mb-2 font-semibold">Privacy & Security</span>
+                  <h2 className="text-display-md text-on-dark mb-3 sm:mb-4">
                     Cryptographic boundaries, <span className="italic font-display text-coral font-display">not</span> corporate policies.
                   </h2>
-                  <p className="text-on-dark-soft text-[15px] leading-relaxed max-w-[480px]">
+                  <p className="text-on-dark-soft text-[14px] sm:text-[15px] leading-relaxed max-w-[480px]">
                     We believe anonymity is a technical requirement, not a visual filter. The tweeting platform is architected so that even with direct database access, no one can correlate your postings back to your real identity.
                   </p>
                 </div>
-                <div className="lg:col-span-6 grid sm:grid-cols-2 gap-4">
-                  <div className="bg-surface-dark-elevated p-5 rounded-lg border border-white/5">
-                    <h4 className="text-on-dark font-semibold text-[15px] mb-2">No Plaintext Storage</h4>
-                    <p className="text-on-dark-soft text-[12.5px] leading-relaxed">
+                <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="bg-surface-dark-elevated p-4 sm:p-5 rounded-lg border border-white/5">
+                    <h4 className="text-on-dark font-semibold text-[14.5px] sm:text-[15px] mb-1.5 sm:mb-2">No Plaintext Storage</h4>
+                    <p className="text-on-dark-soft text-[12px] sm:text-[12.5px] leading-relaxed">
                       Emails are verified via OTP in memory and immediately deleted. We never store plaintext work emails anywhere.
                     </p>
                   </div>
-                  <div className="bg-surface-dark-elevated p-5 rounded-lg border border-white/5">
-                    <h4 className="text-on-dark font-semibold text-[15px] mb-2">Dual-Salt Isolation</h4>
-                    <p className="text-on-dark-soft text-[12.5px] leading-relaxed">
+                  <div className="bg-surface-dark-elevated p-4 sm:p-5 rounded-lg border border-white/5">
+                    <h4 className="text-on-dark font-semibold text-[14.5px] sm:text-[15px] mb-1.5 sm:mb-2">Dual-Salt Isolation</h4>
+                    <p className="text-on-dark-soft text-[12px] sm:text-[12.5px] leading-relaxed">
                       Posting identities and hiring profiles use separate, independent salts. They cannot be merged or queried together.
                     </p>
                   </div>
-                  <div className="bg-surface-dark-elevated p-5 rounded-lg border border-white/5">
-                    <h4 className="text-on-dark font-semibold text-[15px] mb-2">Zero Metadata Logs</h4>
-                    <p className="text-on-dark-soft text-[12.5px] leading-relaxed">
+                  <div className="bg-surface-dark-elevated p-4 sm:p-5 rounded-lg border border-white/5">
+                    <h4 className="text-on-dark font-semibold text-[14.5px] sm:text-[15px] mb-1.5 sm:mb-2">Zero Metadata Logs</h4>
+                    <p className="text-on-dark-soft text-[12px] sm:text-[12.5px] leading-relaxed">
                       We strip client IP addresses, browser fingerprint headers, and query parameters to ensure zero tracking.
                     </p>
                   </div>
-                  <div className="bg-surface-dark-elevated p-5 rounded-lg border border-white/5">
-                    <h4 className="text-on-dark font-semibold text-[15px] mb-2">Domain-Only Feeds</h4>
-                    <p className="text-on-dark-soft text-[12.5px] leading-relaxed">
+                  <div className="bg-surface-dark-elevated p-4 sm:p-5 rounded-lg border border-white/5">
+                    <h4 className="text-on-dark font-semibold text-[14.5px] sm:text-[15px] mb-1.5 sm:mb-2">Domain-Only Feeds</h4>
+                    <p className="text-on-dark-soft text-[12px] sm:text-[12.5px] leading-relaxed">
                       Posts and comments display only your chosen handle and domain (e.g. google.com). Your identity remains sealed.
                     </p>
                   </div>
@@ -1272,13 +1274,13 @@ function LandingPage({ onExplore }: { onExplore: () => void }) {
         </section>
       </main>
 
-      <footer className="bg-surface-dark py-12 border-t border-white/10 text-center text-on-dark-soft font-sans">
-        <div className="max-w-[1200px] mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <footer className="bg-surface-dark py-8 sm:py-12 border-t border-white/10 text-center text-on-dark-soft font-sans">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
           <div className="flex items-center gap-2">
             <SpikeMark className="w-4 h-4 text-on-dark" />
-            <span className="font-display text-[16px] text-on-dark font-medium">the tweeting platform</span>
+            <span className="font-display text-[15px] sm:text-[16px] text-on-dark font-medium">the tweeting platform</span>
           </div>
-          <p className="text-[12px] text-on-dark-soft">
+          <p className="text-[11.5px] sm:text-[12px] text-on-dark-soft">
             &copy; 2026. Standalone anonymous network. Protected by cryptographically isolated hashing.
           </p>
         </div>

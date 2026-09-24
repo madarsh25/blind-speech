@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { UserCheck, ShieldAlert, Sparkles } from "lucide-react";
+import { UserCheck, ShieldAlert, Sparkles, ArrowLeft } from "lucide-react";
 import { api } from "../api/client";
 
 export const Route = createFileRoute("/signup")({
@@ -72,36 +72,37 @@ function SignupPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 bg-canvas/85 backdrop-blur-md border-b border-hairline-soft font-sans">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <SpikeMark className="w-5 h-5 text-coral" />
-            <span className="font-display text-[22px] leading-none text-ink tracking-tight font-display">the tweeting platform</span>
-          </Link>
-        </div>
+    <div className="flex flex-col min-h-screen bg-canvas font-sans text-ink">
+      <header className="sticky top-0 z-50 bg-canvas/90 backdrop-blur-md border-b border-hairline-soft px-4 sm:px-6 lg:px-10 h-14 sm:h-16 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <SpikeMark className="w-5 h-5 text-coral shrink-0" />
+          <span className="font-display text-[19px] sm:text-[22px] leading-none text-ink tracking-tight">the tweeting platform</span>
+        </Link>
+        <Link to="/" className="text-[13px] sm:text-[14px] font-medium text-muted-ink hover:text-ink transition-colors flex items-center gap-1 min-h-[40px]">
+          <ArrowLeft className="w-3.5 h-3.5" /> <span className="hidden xs:inline">Back to</span> Home
+        </Link>
       </header>
 
-      <main className="flex-grow flex items-center justify-center py-16 px-6 font-sans">
-        <div className="w-full max-w-[460px] bg-surface-card rounded-xl p-8 hairline animate-fade-up">
-          <div className="w-12 h-12 bg-surface-soft rounded-lg flex items-center justify-center mb-6">
-            <UserCheck className="w-6 h-6 text-coral" />
+      <main className="flex-grow flex items-center justify-center py-8 sm:py-16 px-4 sm:px-6">
+        <div className="w-full max-w-[460px] bg-surface-card rounded-xl p-5 sm:p-8 hairline animate-fade-up">
+          <div className="w-11 h-11 sm:w-12 sm:h-12 bg-surface-soft rounded-lg flex items-center justify-center mb-5 sm:mb-6">
+            <UserCheck className="w-5 h-5 sm:w-6 sm:h-6 text-coral" />
           </div>
 
-          <h2 className="font-display text-display-sm text-ink mb-2">Create posting identity</h2>
+          <h2 className="font-display text-[22px] sm:text-display-sm text-ink mb-2">Create posting identity</h2>
           
           {domain && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-coral/10 rounded-pill text-coral font-mono text-[12px] font-semibold mb-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-coral/10 rounded-pill text-coral font-mono text-[11.5px] sm:text-[12px] font-semibold mb-4 sm:mb-6">
               <Sparkles className="w-3.5 h-3.5" /> Verified at @{domain}
             </div>
           )}
 
-          <p className="text-[14px] text-body mb-6 leading-relaxed">
+          <p className="text-[13.5px] sm:text-[14px] text-body mb-5 sm:mb-6 leading-relaxed">
             Please choose a unique, anonymous username. Do not use your real name or any identifier that could reveal your identity.
           </p>
 
           {!token ? (
-            <div className="bg-red-50 text-error p-4 rounded-md hairline mb-6 flex items-start gap-3">
+            <div className="bg-red-50 text-destructive p-4 rounded-md hairline mb-6 flex items-start gap-3">
               <ShieldAlert className="w-5 h-5 shrink-0 mt-0.5" />
               <p className="text-[13px] leading-relaxed font-medium">
                 Missing verification token. Please verify your work email first.
@@ -121,7 +122,9 @@ function SignupPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   disabled={isLoading}
-                  className="w-full bg-canvas text-ink px-4 py-2.5 text-[14px] rounded-md hairline focus:outline-none focus:border-coral transition-colors"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  className="w-full bg-canvas text-ink px-4 py-3 text-[16px] sm:text-[14px] rounded-md hairline focus:outline-none focus:border-coral transition-colors"
                 />
               </div>
 
@@ -132,7 +135,7 @@ function SignupPage() {
               <button
                 type="submit"
                 disabled={isLoading || username.trim().length < 3}
-                className="w-full bg-coral hover:bg-coral-active text-white h-11 rounded-md text-[14px] font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-50 mt-6"
+                className="w-full bg-coral hover:bg-coral-active active:scale-[0.98] text-white min-h-[48px] h-12 rounded-md text-[14.5px] sm:text-[14px] font-medium flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50 mt-6"
               >
                 {isLoading ? "Creating..." : "Create Account & Sign In"}
               </button>
@@ -141,8 +144,8 @@ function SignupPage() {
         </div>
       </main>
 
-      <footer className="bg-surface-dark py-8 border-t border-white/10 text-center text-on-dark-soft font-sans">
-        <p className="text-[12px]">
+      <footer className="bg-surface-dark py-6 sm:py-8 px-4 border-t border-white/10 text-center text-on-dark-soft">
+        <p className="text-[11.5px] sm:text-[12px]">
           &copy; 2026. Standalone anonymous network. Protected by cryptographically isolated hashing.
         </p>
       </footer>

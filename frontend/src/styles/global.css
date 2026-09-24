@@ -79,6 +79,7 @@
 @layer base {
   * {
     border-color: var(--hairline);
+    -webkit-tap-highlight-color: transparent;
   }
   html, body {
     background-color: var(--canvas);
@@ -86,6 +87,8 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
+    width: 100%;
   }
   ::selection {
     background: var(--coral);
@@ -101,42 +104,50 @@
 
 @utility text-display-xl {
   font-family: var(--font-display);
-  font-size: clamp(44px, 6vw, 72px);
-  line-height: 1.02;
+  font-size: clamp(34px, 7vw, 68px);
+  line-height: 1.05;
   letter-spacing: -0.035em;
   font-weight: 400;
 }
 @utility text-display-lg {
   font-family: var(--font-display);
-  font-size: clamp(36px, 4.5vw, 56px);
-  line-height: 1.05;
+  font-size: clamp(28px, 5.5vw, 52px);
+  line-height: 1.1;
   letter-spacing: -0.03em;
   font-weight: 400;
 }
 @utility text-display-md {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3vw, 40px);
-  line-height: 1.1;
+  font-size: clamp(24px, 4vw, 36px);
+  line-height: 1.15;
   letter-spacing: -0.025em;
   font-weight: 400;
 }
 @utility text-display-sm {
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: clamp(20px, 3.5vw, 26px);
   line-height: 1.2;
   letter-spacing: -0.02em;
   font-weight: 400;
 }
 
 @utility caption-upper {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.15em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 @utility hairline {
   border: 1px solid var(--hairline);
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes fade-up {
@@ -152,6 +163,6 @@
   50% { opacity: 0; }
 }
 
-@utility animate-fade-up { animation: fade-up 0.7s ease-out both; }
+@utility animate-fade-up { animation: fade-up 0.5s ease-out both; }
 @utility animate-float { animation: float 6s ease-in-out infinite; }
 @utility animate-blink { animation: blink 1.2s steps(2) infinite; }

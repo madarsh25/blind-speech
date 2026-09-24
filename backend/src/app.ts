@@ -21,7 +21,7 @@ app.use(
       if (!origin) return callback(null, true);
       if (
         allowedOrigins.includes(origin) ||
-        origin.endsWith(".vercel.app") ||
+        origin.endsWith(".vercel.app") || // change this during prod. cause it allows any site with vercel.app to access
         process.env.NODE_ENV !== "production"
       ) {
         return callback(null, true);
