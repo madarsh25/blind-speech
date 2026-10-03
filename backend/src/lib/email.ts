@@ -43,11 +43,12 @@ export interface SendEmailArgs {
 export async function sendEmail({ to, subject, html, text }: SendEmailArgs): Promise<{ success: boolean; id?: string }> {
   // If console debug mode is explicitly turned on
   if (DEBUG_EMAIL_CONSOLE) {
-    console.log("=========================================");
-    console.log(`[DEBUG MAIL] To: ${to}`);
+    const [user, domain] = to.split("@");
+    const masked = `${user.slice(0, 2)}***@${domain}`;
+    console.log("=========================================" );
+    console.log(`[DEBUG MAIL] To: ${masked}`);
     console.log(`[DEBUG MAIL] Subject: ${subject}`);
-    console.log(`[DEBUG MAIL] Content:\n${text}`);
-    console.log("=========================================");
+    console.log("=========================================" );
     return { success: true, id: "debug-console-id" };
   }
 
@@ -63,13 +64,13 @@ export async function sendEmail({ to, subject, html, text }: SendEmailArgs): Pro
       });
 
       if (data.error) {
-        console.error("Resend delivery error details:", data.error);
-        throw new Error(data.error.message || "Resend API Error");
+        console.error("Resend delivery error: [REDACTED]", { code: data.error?.name });
+        throw new Error("Resend API Error");
       }
 
       return { success: true, id: data.data?.id };
-    } catch (error) {
-      console.error("Failed to send email via Resend primary provider:", error);
+    } catch (error: any) {
+      console.error("Failed to send email via Resend primary provider: [REDACTED]", { name: error?.name, code: error?.code });
       // Fall through to SMTP if configured
       if (!smtpTransporter) throw error;
     }
@@ -87,8 +88,8 @@ export async function sendEmail({ to, subject, html, text }: SendEmailArgs): Pro
       });
 
       return { success: true, id: info.messageId };
-    } catch (error) {
-      console.error("Failed to send email via fallback SMTP provider:", error);
+    } catch (error: any) {
+      console.error("Failed to send email via fallback SMTP provider: [REDACTED]", { name: error?.name, code: error?.code });
       throw error;
     }
   }

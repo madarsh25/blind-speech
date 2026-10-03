@@ -22,9 +22,9 @@ export async function requestOtp(req: Request, res: Response) {
 
     const domain = clean.split("@")[1];
     const publicDomains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com", "icloud.com"];
-    
+
     // Dev bypass for testing
-    const isLocalDevBypass = process.env.NODE_ENV === "development" && clean === "adarsh.jy@gmail.com";
+    const isLocalDevBypass = process.env.NODE_ENV === "development" && (clean === "adarsh.jy@gmail.com" || clean === "m00724680@gmail.com");
 
     if (publicDomains.includes(domain) && !isLocalDevBypass) {
       return res.status(400).json({ success: false, error: "Please use your official work email (e.g. name@company.com)" });
@@ -32,13 +32,14 @@ export async function requestOtp(req: Request, res: Response) {
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
-    const encryptedEmail = encryptEmail(clean);
+    const encryptedEmail = encryptEmail(clean); // encryption takes place here
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
-    
+
+    // after encyption, the encrypted value is stored in the database
     const verification = await db.otpVerification.create({
       data: {
-        encryptedEmail,
-        otpHash,
+        encryptedEmail, //cyphered text only
+        otpHash, // SHA256 hash only
         expiresAt,
       },
     });
@@ -122,7 +123,7 @@ export async function signup(req: Request, res: Response) {
     if (!token) {
       return res.status(400).json({ success: false, error: "Missing signup token" });
     }
-    
+
     const username = (rawUsername || "").trim();
     if (username.length < 3 || username.length > 20) {
       return res.status(400).json({ success: false, error: "Username must be between 3 and 20 characters" });

@@ -1,6 +1,15 @@
 import crypto from "crypto";
 
-const ENCRYPTION_KEY = process.env.EMAIL_ENCRYPTION_KEY || "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"; // 32 bytes (64 hex characters)
+const DUMMY_KEY = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+const _ENCRYPTION_KEY = process.env.EMAIL_ENCRYPTION_KEY;
+if (!_ENCRYPTION_KEY || _ENCRYPTION_KEY === DUMMY_KEY) {
+  throw new Error(
+    "EMAIL_ENCRYPTION_KEY must be set to a real 32-byte hex secret (64 hex chars). " +
+    "Generate one with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+  );
+}
+const ENCRYPTION_KEY: string = _ENCRYPTION_KEY; // narrowed: guard above guarantees non-null, non-dummy
+
 const SALT_POSTING = process.env.SALT_POSTING || "default_posting_salt_change_in_prod";
 
 /**
