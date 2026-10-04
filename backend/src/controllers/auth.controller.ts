@@ -24,9 +24,15 @@ export async function requestOtp(req: Request, res: Response) {
     const publicDomains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com", "icloud.com"];
 
     // Dev bypass for testing
-    const isLocalDevBypass = process.env.NODE_ENV === "development" && (clean === "adarsh.jy@gmail.com" || clean === "m00724680@gmail.com");
+    const devEmails = (process.env.DEV_BYPASS_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
 
-    if (publicDomains.includes(domain) && !isLocalDevBypass) {
+    const isDevBypass = devEmails.includes(clean);
+    console.log("BYPASS DEBUG", { clean, count: devEmails.length, isDevBypass });
+
+    if (publicDomains.includes(domain) && !isDevBypass) {
       return res.status(400).json({ success: false, error: "Please use your official work email (e.g. name@company.com)" });
     }
 
