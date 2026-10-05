@@ -45,6 +45,7 @@ app.get("/health", (req, res) => {
 app.use("/api", apiRoutes);
 
 // 404 Handler
+app.get("/health", (_req, res) => res.send("ok"));
 app.use((req, res) => {
   res.status(404).json({ success: false, error: "Endpoint not found" });
 });
